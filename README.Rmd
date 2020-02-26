@@ -1,0 +1,60 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# shub4r
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This package is a small personal interface to the [Sentinel Hub OGC web services](https://sentinel-hub.com/develop/capabilities/wms). It is far from being a full implementation of the possibilites offered by these web services.
+
+See doc here : https://sentinel-hub.com/develop/capabilities/wms
+
+* wms server : http://services.sentinel-hub.com/ogc/wms/{INSTANCE_ID}
+* wfs server : http://services.sentinel-hub.com/ogc/wfs/{INSTANCE_ID}
+
+Example :
+
+```{r }
+require(shub4r)
+require(sf)
+
+# login
+instance_id_s1 <- Sys.getenv("instance_id_shub_s1")
+instance_id_s2 <- Sys.getenv("instance_id_shub_s2")
+
+shr_login(instance_id_s1,source = "sentinel1")
+shr_login(instance_id_s2,source = "sentinel2")
+
+# set up roi and time range
+roi <- sf::st_as_sf(data.frame(geom="POLYGON ((-5.82 9.54, -5.42 9.55, -5.41 8.84, -5.81 8.84, -5.82 9.54))"), wkt="geom", crs = 4326)
+time_range<-as.Date(c("2017-01-01","2017-01-30"))
+
+# get Sentinel 1 products available
+s1_products_available <- shr_list_products(collection = "S1-AWS-IW-VVVH", roi = roi, time_range = time_range)
+print(str(s1_products_available))
+
+# get Sentinel 2 L2A products available
+s2l2a_products_available <- shr_list_products(collection = "S2L2A", roi = roi, time_range = time_range)
+print(str(s2l2a_products_available))
+
+# get URLs for Sentinel 1 products
+s1_urls <- shr_get_url(collection = "S1-AWS-IW-VVVH", variables = c("VV","VH"), roi = roi, time_range = time_range)
+print(str(s1_urls))
+
+# get URLs for Sentinel 2 products for the bands B04, B08, B08A, B11, 9_SCENE_CLASSIFICATION
+s2l2a_urls <- shr_get_url(collection = "S2L2A", variables = c("B04","B08","B8A","B11","9_SCENE_CLASSIFICATION"), roi = roi, time_range = time_range)
+print(str(s2l2a_urls))
+
+```

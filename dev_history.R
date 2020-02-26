@@ -1,8 +1,9 @@
-usethis::use_build_ignore("dev_history.R")
-usethis::use_git()
-usethis::use_gpl3_license()
-devtools::check()
-usethis::proj_get()
-usethis::use_github()
+require(dplyr)
+
+shrVariables_internal <- read.csv("/home/ptaconet/shub4r/.variables.csv",stringsAsFactors =F ) %>% dplyr::arrange(collection)
+
+usethis::use_data(shrVariables_internal,internal = TRUE,overwrite = TRUE)
+
+devtools::document()
 devtools::install()
-usethis::use_readme_rmd()
+
