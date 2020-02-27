@@ -1,0 +1,3 @@
+collection,source,long_name,nature,provider,url_metadata,doi,version,spatial_resolution_m,temporal_resolution,temporal_resolution_unit,spatial_coverage,start_date,end_date,indicative_latency_days,url_manual_access,status,login,url_programmatic_access
+S2L2A,Sentinel,Sentinel 2 – level 2A,Elevation,Copernicus,,,,,,,,,,,,,,
+S1-AWS-IW-VVVH,Sentinel,Sentinel 1,Rainfall,Copernicus,,,,,,,,,,,,,,

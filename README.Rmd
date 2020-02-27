@@ -43,13 +43,13 @@ time_range<-as.Date(c("2017-01-01","2017-01-30"))
 
 # get Sentinel 1 products available
 s1_products_available <- shr_list_products(collection = "S1-AWS-IW-VVVH", roi = roi, time_range = time_range)
-print(str(s1_products_available))
+print(str(s1_products_available$properties))
 
 # get Sentinel 2 L2A products available
 s2l2a_products_available <- shr_list_products(collection = "S2L2A", roi = roi, time_range = time_range)
-print(str(s2l2a_products_available))
+print(str(s2l2a_products_available$properties))
 
-# get URLs for Sentinel 1 products
+# get URLs for Sentinel 1 products for the bands VV and VH
 s1_urls <- shr_get_url(collection = "S1-AWS-IW-VVVH", variables = c("VV","VH"), roi = roi, time_range = time_range)
 print(str(s1_urls))
 

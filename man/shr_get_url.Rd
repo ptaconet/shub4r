@@ -11,18 +11,18 @@ a data.frame with one row for each dataset and 3 columns  :
  \itemize{
  \item{*time_start*: }{Start Date/time for the dataset}
  \item{*name*: }{An indicative name for the dataset}
- \item{*url*: }{WFS URL for the dataset}
+ \item{*url*: }{WMS URL for the dataset}
  }
 }
 \description{
 This function enables to retrieve WMS URLs of Sentinel products given a collection, a ROI, a time frame and a set of bands of interest.
 }
 \details{
-Available collections : S2L2A, S2L1C, S1-AWS-IW-VVVH
+Available collections : S2L2A, S1-AWS-IW-VVVH
 
 Available dimensions :
 \itemize{
-\item{for collections S2L2A and S2L1C : } {1_TRUE_COLOR, 2_FALSE_COLOR, 3_NDVI, 4_FALSE_COLOR, 5_MOISTURE_INDEX, 6_SWIR, 7-NDWI, 8_NDSI, 9_SCENE_CLASSIFICATION, B01, B02, etc... B12}
+\item{for collection S2L2A  : } {1_TRUE_COLOR, 2_FALSE_COLOR, 3_NDVI, 4_FALSE_COLOR, 5_MOISTURE_INDEX, 6_SWIR, 7-NDWI, 8_NDSI, 9_SCENE_CLASSIFICATION, B01, B02, etc... B12}
 \item{for collection S1-AWS-IW-VVVH : } {towrite}
 }
 }
@@ -30,26 +30,15 @@ Available dimensions :
 
 \dontrun{
 # login to the wms server
-log_s1 <- shr_login(Sys.getenv("instance_id_shub_s1"))
-log_s2 <- shr_login(Sys.getenv("instance_id_shub_s2"))
+log_s1 <- shr_login(Sys.getenv("instance_id_shub_s1"),"sentinel1")
+log_s2 <- shr_login(Sys.getenv("instance_id_shub_s2"),"sentinel2")
 
 roi <- sf::st_as_sf(data.frame(geom="POLYGON ((-5.82 9.54, -5.42 9.55, -5.41 8.84, -5.81 8.84, -5.82 9.54))"),wkt="geom",crs = 4326)
 time_range<-as.Date(c("2017-01-01","2017-01-30"))
 
+(s1_urls <-shr_get_url(collection = "S1-AWS-IW-VVVH", variables = c("VV","VH") ,roi = roi, time_range = time_range))
 
-# get url
-df_data_to_dl <- shr_get_url(time_range = time_range,
-roi = roi,
-collection = "S2L2A",
-dimensions =  c("B04","B08","B8A","B11","9_SCENE_CLASSIFICATION")
-)
-
-df_data_to_dl <- shr_get_url(time_range = time_range,
-roi = roi,
-collection = "S1-AWS-IW-VVVH",
-dimensions = c("VV","VH")
-)
-
+(s2l2a_urls <-shr_get_url(collection = "S2L2A", variables = c("B04","B08","B8A","B11","9_SCENE_CLASSIFICATION") ,roi = roi, time_range = time_range))
 }
 }
 \author{

@@ -9,3 +9,22 @@ shr_list_products(collection, roi, time_range, instance_id = NULL)
 \description{
 Get products available for a given collection, roi and time range
 }
+\examples{
+
+\dontrun{
+
+# login to the wms server
+log_s1 <- shr_login(Sys.getenv("instance_id_shub_s1"))
+log_s2 <- shr_login(Sys.getenv("instance_id_shub_s2"))
+
+roi <- sf::st_as_sf(data.frame(geom="POLYGON ((-5.82 9.54, -5.42 9.55, -5.41 8.84, -5.81 8.84, -5.82 9.54))"),wkt="geom",crs = 4326)
+time_range<-as.Date(c("2017-01-01","2017-01-30"))
+
+# get Sentinel 1 products available
+(s1_products_available <-shr_list_products(collection = "S1-AWS-IW-VVVH", roi = roi, time_range = time_range))
+
+# get Sentinel 2 L2A products available
+(s2l2a_products_available <-shr_list_products(collection = "S2L2A", roi = roi, time_range = time_range))
+
+}
+}
