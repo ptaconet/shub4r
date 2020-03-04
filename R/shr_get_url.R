@@ -47,8 +47,7 @@ shr_get_url<-function(collection,
                       variables,
                       roi,
                       time_range, # mandatory. either a time range (e.g. c(date_start,date_end) ) or a single date e.g. ( date_start )
-                      instance_id=NULL,
-                      verbose=FALSE
+                      instance_id=NULL
 
 ){
 
