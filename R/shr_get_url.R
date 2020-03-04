@@ -24,7 +24,8 @@
 #'
 #' @import sf dplyr
 #' @importFrom utils URLencode
-#' @importFrom jsonlite fromJSON
+#' @importFrom purrr map_chr
+#'
 #' @export
 #'
 #' @examples
@@ -46,7 +47,8 @@ shr_get_url<-function(collection,
                       variables,
                       roi,
                       time_range, # mandatory. either a time range (e.g. c(date_start,date_end) ) or a single date e.g. ( date_start )
-                      instance_id=NULL
+                      instance_id=NULL,
+                      verbose=FALSE
 
 ){
 
@@ -73,6 +75,7 @@ shr_get_url<-function(collection,
 
  grid_5000px_df <- data.frame(area_wkt=grid_5000px,part_number=seq(1,length(grid_5000px),1),stringsAsFactors = F)
 
+ if(length(df_data_available)>0){
  # Build URLs to download data
  res <- expand.grid(variables, grid_5000px, dates_to_retrieve) %>%
    dplyr::rename(band=Var1,area_wkt=Var2,time_start=Var3) %>%
@@ -86,6 +89,9 @@ shr_get_url<-function(collection,
 
  res$url <- purrr::map_chr(res$url,~utils::URLencode(.))
 
+ } else {
+    res <- data.frame(time_start=NA,name=NA,url=NA,destfile=NA)
+ }
   return(res)
 
 }

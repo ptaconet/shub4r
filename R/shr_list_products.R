@@ -3,6 +3,10 @@
 #' @title Get products available for a given collection, roi and time range
 #' @export
 #'
+#' @importFrom sf st_transform
+#' @importFrom utils URLencode
+#' @importFrom jsonlite fromJSON
+#'
 #' @examples
 #'
 #' \dontrun{
@@ -53,6 +57,7 @@ shr_list_products <- function(collection,
   wfs <- utils::URLencode(paste0("https://services.sentinel-hub.com/ogc/wfs/",instance_id,"?version=2.0.0&service=WFS&request=GetFeature&SRSNAME=EPSG:",epsg,"&geometry=",sf::st_as_text(roi$geom),"&time=",time_range[1],"/",time_range[2],"/P1D&typenames=",typenames,"&outputformat=application/json"))
   df_data_available <- jsonlite::fromJSON(wfs)$features
 
+  if(length(df_data_available)==0){warning("no products available for the time frame / roi specified")}
   return(df_data_available)
 
 }
