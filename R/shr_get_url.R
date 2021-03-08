@@ -68,19 +68,19 @@ shr_get_url<-function(collection,
  epsg <- .getUTMepsg(roi)
  roi <- sf::st_transform(roi,epsg) %>% sf::st_zm()
 
- # We can download max 5000 * 5000 pixels image from Sinergize WMS servers.
- grid_5000px <- sf::st_make_grid(roi,what="polygons",cellsize = 50000) %>%
+ # We can download max 2500 * 2500 pixels image from Sinergize WMS servers.
+ grid_2500px <- sf::st_make_grid(roi,what="polygons",cellsize = 25000) %>%
     sf::st_crop(roi) %>%
     sf::st_as_text()
 
- grid_5000px_df <- data.frame(area_wkt=grid_5000px,part_number=seq(1,length(grid_5000px),1),stringsAsFactors = F)
+ grid_2500px_df <- data.frame(area_wkt=grid_2500px,part_number=seq(1,length(grid_2500px),1),stringsAsFactors = F)
 
  if(length(df_data_available)>0){
  # Build URLs to download data
- res <- expand.grid(variables, grid_5000px, dates_to_retrieve) %>%
+ res <- expand.grid(variables, grid_2500px, dates_to_retrieve) %>%
    dplyr::rename(band=Var1,area_wkt=Var2,time_start=Var3) %>%
    dplyr::mutate(url=paste0("https://services.sentinel-hub.com/ogc/wms/",instance_id,"?version=1.1.1&service=WMS&request=GetMap&format=image/tiff&crs=EPSG:",epsg,"&layers=",band,"&geometry=",area_wkt,"&RESX=10&RESY=10&time=",time_start,"/",time_start,"&showlogo=false&transparent=false&maxcc=100&evalsource=",collection)) %>%
-   dplyr::left_join(grid_5000px_df,by="area_wkt") %>%
+   dplyr::left_join(grid_2500px_df,by="area_wkt") %>%
    dplyr::mutate(name=paste0(collection,"_",gsub("-","",time_start),"_",band,"__p",part_number)) %>%
    dplyr::mutate(destfile=file.path(collection,paste0(name,".tif"))) %>%
    dplyr::select(name,time_start,destfile,url) %>%
