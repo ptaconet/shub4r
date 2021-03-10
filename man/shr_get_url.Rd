@@ -4,7 +4,8 @@
 \alias{shr_get_url}
 \title{Get URLs of Sentinel datasets}
 \usage{
-shr_get_url(collection, variables, roi, time_range, instance_id = NULL)
+shr_get_url(collection, variables, roi, time_range, instance_id = NULL,
+  verbose = FALSE)
 }
 \value{
 a data.frame with one row for each dataset and 3 columns  :

@@ -57,4 +57,9 @@ print(str(s1_urls))
 s2l2a_urls <- shr_get_url(collection = "S2L2A", variables = c("B04","B08","B8A","B11","9_SCENE_CLASSIFICATION"), roi = roi, time_range = time_range)
 print(str(s2l2a_urls))
 
+# download
+#httr::GET(s2l2a_urls$url[1],write_disk(s2l2a_urls$destfile[1]),progress(),config = list(maxredirs=-1))
+
+
+
 ```
