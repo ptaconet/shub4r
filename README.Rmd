@@ -38,8 +38,8 @@ shr_login(instance_id_s1,source = "sentinel1")
 shr_login(instance_id_s2,source = "sentinel2")
 
 # set up roi and time range
-roi <- sf::st_as_sf(data.frame(geom="POLYGON ((-5.82 9.54, -5.42 9.55, -5.41 8.84, -5.81 8.84, -5.82 9.54))"), wkt="geom", crs = 4326)
-time_range<-as.Date(c("2017-01-01","2017-01-30"))
+roi <- sf::st_as_sf(data.frame(geom="Polygon ((17.66230354052624563 3.67542151541521456, 17.66174846452226888 3.96073058146009194, 17.96648519070638983 3.95073921338848155, 17.9842476228336956 3.66376491933166903, 17.66230354052624563 3.67542151541521456))"), wkt="geom", crs = 4326)
+time_range<-as.Date(c("2020-01-01","2020-03-01"))
 
 # get Sentinel 1 products available
 s1_products_available <- shr_list_products(collection = "S1-AWS-IW-VVVH", roi = roi, time_range = time_range)
@@ -50,16 +50,14 @@ s2l2a_products_available <- shr_list_products(collection = "S2L2A", roi = roi, t
 print(str(s2l2a_products_available$properties))
 
 # get URLs for Sentinel 1 products for the bands VV and VH
-s1_urls <- shr_get_url(collection = "S1-AWS-IW-VVVH", variables = c("VV","VH"), roi = roi, time_range = time_range)
-print(str(s1_urls))
+#s1_urls <- shr_get_url(collection = "S1-AWS-IW-VVVH", variables = c("VV","VH"), roi = roi, time_range = time_range)
+#print(str(s1_urls))
 
 # get URLs for Sentinel 2 products for the bands B04, B08, B08A, B11, 9_SCENE_CLASSIFICATION
-s2l2a_urls <- shr_get_url(collection = "S2L2A", variables = c("B04","B08","B8A","B11","9_SCENE_CLASSIFICATION"), roi = roi, time_range = time_range)
+s2l2a_urls <- shr_get_url(collection = "S2L2A", variables = c("B04","B08","B8A","B11","9_SCENE_CLASSIFICATION"), roi = roi, time_range = time_range, cloud_cover_max = 30)
 print(str(s2l2a_urls))
 
-# download
-#httr::GET(s2l2a_urls$url[1],write_disk(s2l2a_urls$destfile[1]),progress(),config = list(maxredirs=-1))
-
-
-
 ```
+
+
+

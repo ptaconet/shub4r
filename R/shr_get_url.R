@@ -47,6 +47,7 @@ shr_get_url<-function(collection,
                       variables,
                       roi,
                       time_range, # mandatory. either a time range (e.g. c(date_start,date_end) ) or a single date e.g. ( date_start )
+                      cloud_cover_max = NULL,
                       instance_id=NULL,
                       verbose=FALSE
 
@@ -60,7 +61,11 @@ shr_get_url<-function(collection,
 
  df_data_available <- shr_list_products(collection,roi,time_range,instance_id)
 
- dates_to_retrieve <- unique(df_data_available$properties$date)
+ if(!is.null(cloud_cover_max)){
+    df_data_available <- df_data_available$properties %>% dplyr::filter(cloudCoverPercentage <= cloud_cover_max)
+ }
+
+ dates_to_retrieve <- unique(df_data_available$date)
 
 
  if(length(time_range)==1){time_range=c(time_range,time_range)}
