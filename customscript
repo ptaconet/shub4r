@@ -1,0 +1,12 @@
+function setup() {
+  return {
+    input: [{
+      bands: ["B02", "B03", "B04"], // this sets which bands to use
+      units: "DN" // here we optionally set the units. All bands will be in this unit (in this case Digital numbers)
+    }],
+    output: { // this defines the output image type
+      bands: 3, // the output of this evalscript will have RGB colors
+      sampleType: "UINT16" // raster format will be UINT16
+    }
+  };
+}
